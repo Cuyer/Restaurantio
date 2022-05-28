@@ -21,7 +21,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Credentials("Name", "Enter your name")
+            RestaurantioTheme {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+
+                ) {
+                    Credentials("Name", "Enter your name")
+
+                }
+
+
+            }
+
 
         }
     }
@@ -32,7 +44,11 @@ class MainActivity : ComponentActivity() {
 fun StandardButton(buttonText: String) {
     Button(onClick = {
         /*TODO*/
-    }) {
+    },
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(20.dp, 0.dp, 20.dp, 0.dp),
+        shape = RoundedCornerShape(10.dp)) {
         Text(text = buttonText)
     }
 }
@@ -45,12 +61,13 @@ fun Credentials(header: String, hint: String) {
         val(headerText, TextField) = createRefs()
 
         Text(
-            modifier = Modifier.constrainAs(headerText)
-            {
-                bottom.linkTo(TextField.top)
-                start.linkTo(parent.start)
+            modifier = Modifier
+                .constrainAs(headerText)
+                {
+                    bottom.linkTo(TextField.top)
+                    start.linkTo(parent.start)
 
-            }
+                }
                 .fillMaxWidth()
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
             text = header)
@@ -59,12 +76,13 @@ fun Credentials(header: String, hint: String) {
             value = text,
             onValueChange = { newText -> text = newText},
             placeholder = { Text(text = hint)},
-            modifier = Modifier.constrainAs(TextField)
-            {
-                top.linkTo(headerText.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
+            modifier = Modifier
+                .constrainAs(TextField)
+                {
+                    top.linkTo(headerText.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
                 .fillMaxWidth()
                 .padding(20.dp, 0.dp, 20.dp, 0.dp),
             shape = RoundedCornerShape(10.dp),
