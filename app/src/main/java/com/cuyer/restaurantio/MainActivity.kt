@@ -5,6 +5,8 @@ import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -20,28 +22,37 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Credentials("Name", "Enter your name")
+
         }
     }
 }
 
 
+@Composable
+fun StandardButton(buttonText: String) {
+    Button(onClick = {
+        /*TODO*/
+    }) {
+        Text(text = buttonText)
+    }
+}
 
 @Composable
 fun Credentials(header: String, hint: String) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
 
-    ConstraintLayout {
+    ConstraintLayout(Modifier.fillMaxWidth()) {
         val(headerText, TextField) = createRefs()
 
         Text(
             modifier = Modifier.constrainAs(headerText)
             {
-                top.linkTo(parent.top)
                 bottom.linkTo(TextField.top)
                 start.linkTo(parent.start)
 
-
-            },
+            }
+                .fillMaxWidth()
+                .padding(25.dp, 0.dp, 20.dp, 5.dp),
             text = header)
 
         OutlinedTextField(
@@ -53,8 +64,10 @@ fun Credentials(header: String, hint: String) {
                 top.linkTo(headerText.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            },
-            shape = RoundedCornerShape(10.dp)
+            }
+                .fillMaxWidth()
+                .padding(20.dp, 0.dp, 20.dp, 0.dp),
+            shape = RoundedCornerShape(10.dp),
         )
 
     }
