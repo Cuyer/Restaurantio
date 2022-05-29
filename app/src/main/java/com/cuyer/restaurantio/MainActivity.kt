@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,26 +17,31 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.cuyer.restaurantio.ui.theme.RestaurantioTheme
+import com.cuyer.restaurantio.viewmodels.MainActivityViewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                viewModel.isLoading.value
+            }
+        }
         setContent {
             RestaurantioTheme {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-
-                ) {
-                    Credentials("Name", "Enter your name")
-
+                Surface(Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()) {
+                        Credentials(header = "Name", hint = "Name")
                 }
-
-
+               }
             }
-
-
         }
     }
 }
