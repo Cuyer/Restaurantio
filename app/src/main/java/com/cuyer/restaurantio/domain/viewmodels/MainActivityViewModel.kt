@@ -1,4 +1,4 @@
-package com.cuyer.restaurantio.viewmodels
+package com.cuyer.restaurantio.domain.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.cuyer.restaurantio.ui.theme
+package com.cuyer.restaurantio.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

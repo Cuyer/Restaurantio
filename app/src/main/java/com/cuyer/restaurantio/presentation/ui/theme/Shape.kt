@@ -1,4 +1,4 @@
-package com.cuyer.restaurantio.ui.theme
+package com.cuyer.restaurantio.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

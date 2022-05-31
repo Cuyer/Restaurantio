@@ -1,4 +1,4 @@
-package com.cuyer.restaurantio.bottomnav
+package com.cuyer.restaurantio.presentation.bottomnav
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

@@ -1,4 +1,4 @@
-package com.cuyer.restaurantio.ui.theme
+package com.cuyer.restaurantio.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
