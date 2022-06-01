@@ -174,74 +174,76 @@ fun ProfileScreen() {
             .verticalScroll(rememberScrollState())
             .fillMaxSize(),
     ) {
-        val(backButton, signUpTextField, textField, googleButton, appleButton,
+        val(signUpTextField, textField, googleButton, appleButton,
             credentialsName, credentialsEmail, credentialsPassword, credentialsNameText,
             credentialsEmailText, credentialsPasswordText,
             createAccountButton, textField2 ) = createRefs()
         createHorizontalChain(googleButton,appleButton, chainStyle = ChainStyle.Packed)
 
-        OutlinedButton(
-            onClick = { /* Do something */ },
-            // Assign reference "button" to the Button composable
-            // and constrain it to the top of the ConstraintLayout
-            modifier = Modifier.constrainAs(backButton) {
-                top.linkTo(parent.top, margin = 16.dp)
-                start.linkTo(parent.start, margin = 16.dp)
-            }
-        ) {
-            Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "Back Button")
-        }
 
         // Assign reference "text" to the Text composable
         // and constrain it to the bottom of the Button composable
-        Text("Zarejestruj się", Modifier.constrainAs(signUpTextField) {
-            start.linkTo(backButton.end, margin = 16.dp)
-            top.linkTo(backButton.top)
-            bottom.linkTo(backButton.bottom)
+        Text(
+            text = "Zarejestruj się",
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier
+                .constrainAs(signUpTextField) {
+            top.linkTo(parent.top, margin = 16.dp)
+            start.linkTo(parent.start, margin = 20.dp)
         })
 
         Text(
             text = "Zarejestruj się używając jednej z poniższych opcji.",
+            style = MaterialTheme.typography.body2,
             modifier = Modifier
                 .constrainAs(textField) {
-                    start.linkTo(parent.start)
-                    top.linkTo(backButton.bottom, margin = 20.dp)
+                    start.linkTo(parent.start, margin = 20.dp)
+                    top.linkTo(signUpTextField.bottom, margin = 60.dp)
                 }
+
         )
 
         OutlinedButton(
             onClick = { /* Do something */ },
             // Assign reference "button" to the Button composable
             // and constrain it to the top of the ConstraintLayout
-            modifier = Modifier.constrainAs(googleButton) {
-                top.linkTo(textField.bottom)
+            modifier = Modifier
+                .padding(20.dp, 0.dp, 5.dp, 0.dp)
+                .constrainAs(googleButton) {
+                top.linkTo(textField.bottom, 20.dp)
                 width = Dimension.fillToConstraints
-            }
+            },
+            shape = RoundedCornerShape(10.dp)
         ) {
             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "Back Button")
         }
 
         OutlinedButton(
             onClick = { /* Do something */ },
+
             // Assign reference "button" to the Button composable
             // and constrain it to the top of the ConstraintLayout
-            modifier = Modifier.constrainAs(appleButton) {
-                top.linkTo(textField.bottom)
+            modifier = Modifier
+                .padding(5.dp, 0.dp, 20.dp,0.dp)
+                .constrainAs(appleButton) {
+                top.linkTo(textField.bottom, 20.dp)
                 width = Dimension.fillToConstraints
-            }
+            },
+           shape = RoundedCornerShape(10.dp)
         ) {
             Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "Back Button")
         }
 
-        var text by remember { mutableStateOf(TextFieldValue("")) }
+        var text by remember { mutableStateOf(TextFieldValue(text = "")) }
 
         Text(
+            style = MaterialTheme.typography.h3,
             modifier = Modifier
                 .constrainAs(credentialsNameText)
                 {
                     bottom.linkTo(credentialsName.top)
                     start.linkTo(parent.start)
-                    top.linkTo(googleButton.bottom)
+                    top.linkTo(googleButton.bottom, 30.dp)
 
                 }
                 .fillMaxWidth()
@@ -251,7 +253,9 @@ fun ProfileScreen() {
         OutlinedTextField(
             value = text,
             onValueChange = { newText -> text = newText},
-            placeholder = { Text(text = "Enter your name") },
+            placeholder = { Text(
+                text = "Enter your name",
+                style = MaterialTheme.typography.h3,) },
             modifier = Modifier
                 .constrainAs(credentialsName)
                 {
@@ -270,19 +274,22 @@ fun ProfileScreen() {
             modifier = Modifier
                 .constrainAs(credentialsEmailText)
                 {
-                    top.linkTo(credentialsName.bottom)
+                    top.linkTo(credentialsName.bottom, 20.dp)
                     start.linkTo(parent.start)
 
 
                 }
                 .fillMaxWidth()
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
-            text = "Email")
+            text = "Email",
+            style = MaterialTheme.typography.h3,)
 
         OutlinedTextField(
             value = text,
             onValueChange = { newText -> text = newText},
-            placeholder = { Text(text = "Enter your email") },
+            placeholder = { Text(
+                text = "Enter your email",
+                style = MaterialTheme.typography.h3,) },
             modifier = Modifier
                 .constrainAs(credentialsEmail)
                 {
@@ -302,17 +309,20 @@ fun ProfileScreen() {
                 .constrainAs(credentialsPasswordText)
                 {
                     start.linkTo(parent.start)
-                    top.linkTo(credentialsEmail.bottom)
+                    top.linkTo(credentialsEmail.bottom, 20.dp)
 
                 }
                 .fillMaxWidth()
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
-            text = "Password")
+            text = "Password",
+            style = MaterialTheme.typography.h3,)
 
         OutlinedTextField(
             value = text,
             onValueChange = { newText -> text = newText},
-            placeholder = { Text(text = "Enter your password") },
+            placeholder = { Text(
+                text = "Enter your password",
+                style = MaterialTheme.typography.h3,) },
             modifier = Modifier
                 .constrainAs(credentialsPassword)
                 {
@@ -330,21 +340,26 @@ fun ProfileScreen() {
             // Assign reference "button" to the Button composable
             // and constrain it to the top of the ConstraintLayout
             modifier = Modifier.constrainAs(createAccountButton) {
-                top.linkTo(credentialsPassword.bottom)
+                top.linkTo(credentialsPassword.bottom, 20.dp)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
             }
+                .padding(20.dp, 0.dp, 20.dp, 0.dp),
+            shape = RoundedCornerShape(10.dp),
         ) {
-            Text(text = "Stwórz konto")
+            Text(text = "Stwórz konto",
+                style = MaterialTheme.typography.button,)
         }
 
         Text(
             text = "Masz już konto? Zaloguj się",
+            style = MaterialTheme.typography.body2,
             modifier = Modifier
                 .constrainAs(textField2) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    top.linkTo(createAccountButton.bottom)
+                    top.linkTo(createAccountButton.bottom, 20.dp)
                 }
         )
 
