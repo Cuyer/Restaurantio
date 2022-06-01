@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.cuyer.restaurantio.R
 import com.cuyer.restaurantio.presentation.composables.ButtonWithImage
 import com.cuyer.restaurantio.presentation.composables.Credentials
 import com.cuyer.restaurantio.presentation.composables.StandardButton
@@ -210,12 +212,12 @@ fun ProfileScreen() {
             modifier = Modifier
                 .padding(20.dp, 0.dp, 5.dp, 0.dp)
                 .constrainAs(googleButton) {
-                top.linkTo(textField.bottom, 20.dp)
-                width = Dimension.fillToConstraints
-            },
+                    top.linkTo(textField.bottom, 20.dp)
+                    width = Dimension.fillToConstraints
+                },
             shape = RoundedCornerShape(10.dp)
         ) {
-            Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "Back Button")
+            Icon(painter = painterResource(id = R.drawable.ic_google_icon) , contentDescription = "Google Icon")
         }
 
         OutlinedButton(
@@ -224,14 +226,14 @@ fun ProfileScreen() {
             // Assign reference "button" to the Button composable
             // and constrain it to the top of the ConstraintLayout
             modifier = Modifier
-                .padding(5.dp, 0.dp, 20.dp,0.dp)
+                .padding(5.dp, 0.dp, 20.dp, 0.dp)
                 .constrainAs(appleButton) {
-                top.linkTo(textField.bottom, 20.dp)
-                width = Dimension.fillToConstraints
-            },
+                    top.linkTo(textField.bottom, 20.dp)
+                    width = Dimension.fillToConstraints
+                },
            shape = RoundedCornerShape(10.dp)
         ) {
-            Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = "Back Button")
+            Icon(painter = painterResource(id = R.drawable.ic_apple_logo) , contentDescription = "Apple Icon")
         }
 
         var text by remember { mutableStateOf(TextFieldValue(text = "")) }
@@ -248,13 +250,13 @@ fun ProfileScreen() {
                 }
                 .fillMaxWidth()
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
-            text = "Name")
+            text = "Imię")
 
         OutlinedTextField(
             value = text,
             onValueChange = { newText -> text = newText},
             placeholder = { Text(
-                text = "Enter your name",
+                text = "Wpisz swoje imię",
                 style = MaterialTheme.typography.h3,) },
             modifier = Modifier
                 .constrainAs(credentialsName)
@@ -288,7 +290,7 @@ fun ProfileScreen() {
             value = text,
             onValueChange = { newText -> text = newText},
             placeholder = { Text(
-                text = "Enter your email",
+                text = "Wpisz swój email",
                 style = MaterialTheme.typography.h3,) },
             modifier = Modifier
                 .constrainAs(credentialsEmail)
@@ -314,14 +316,14 @@ fun ProfileScreen() {
                 }
                 .fillMaxWidth()
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
-            text = "Password",
+            text = "Hasło",
             style = MaterialTheme.typography.h3,)
 
         OutlinedTextField(
             value = text,
             onValueChange = { newText -> text = newText},
             placeholder = { Text(
-                text = "Enter your password",
+                text = "Wpisz swoje hasło",
                 style = MaterialTheme.typography.h3,) },
             modifier = Modifier
                 .constrainAs(credentialsPassword)
@@ -339,12 +341,13 @@ fun ProfileScreen() {
             onClick = { /* Do something */ },
             // Assign reference "button" to the Button composable
             // and constrain it to the top of the ConstraintLayout
-            modifier = Modifier.constrainAs(createAccountButton) {
-                top.linkTo(credentialsPassword.bottom, 20.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-            }
+            modifier = Modifier
+                .constrainAs(createAccountButton) {
+                    top.linkTo(credentialsPassword.bottom, 20.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
                 .padding(20.dp, 0.dp, 20.dp, 0.dp),
             shape = RoundedCornerShape(10.dp),
         ) {
