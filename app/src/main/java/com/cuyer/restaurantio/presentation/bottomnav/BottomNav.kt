@@ -204,39 +204,117 @@ fun ProfileScreen() {
                 }
 
         )
+        if (isSystemInDarkTheme()) {
+            OutlinedButton(
+                onClick = { /* Do something */ },
+                // Assign reference "button" to the Button composable
+                // and constrain it to the top of the ConstraintLayout
+                modifier = Modifier
+                    .padding(20.dp, 0.dp, 5.dp, 0.dp)
+                    .constrainAs(googleButton) {
+                        top.linkTo(textField.bottom, 20.dp)
+                        width = Dimension.fillToConstraints
+                        height = Dimension.value(50.dp)
+                    },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF181818)
+                )
 
-        OutlinedButton(
-            onClick = { /* Do something */ },
-            // Assign reference "button" to the Button composable
-            // and constrain it to the top of the ConstraintLayout
-            modifier = Modifier
-                .padding(20.dp, 0.dp, 5.dp, 0.dp)
-                .constrainAs(googleButton) {
-                    top.linkTo(textField.bottom, 20.dp)
-                    width = Dimension.fillToConstraints
-                },
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Icon(painter = painterResource(id = R.drawable.ic_google_icon) , contentDescription = "Google Icon")
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_google_icon),
+                    contentDescription = "Google Icon",
+                    tint = Color.White
+                )
+            }
+        } else {
+            OutlinedButton(
+                onClick = { /* Do something */ },
+                // Assign reference "button" to the Button composable
+                // and constrain it to the top of the ConstraintLayout
+                modifier = Modifier
+                    .padding(20.dp, 0.dp, 5.dp, 0.dp)
+                    .constrainAs(googleButton) {
+                        top.linkTo(textField.bottom, 20.dp)
+                        width = Dimension.fillToConstraints
+                        height = Dimension.value(50.dp)
+                    },
+                shape = RoundedCornerShape(10.dp),
+
+
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_google_icon),
+                    contentDescription = "Google Icon",
+                    tint = Color.Black
+                )
+            }
         }
 
-        OutlinedButton(
-            onClick = { /* Do something */ },
+        if (isSystemInDarkTheme()) {
+            OutlinedButton(
+                onClick = { /* Do something */ },
 
-            // Assign reference "button" to the Button composable
-            // and constrain it to the top of the ConstraintLayout
-            modifier = Modifier
-                .padding(5.dp, 0.dp, 20.dp, 0.dp)
-                .constrainAs(appleButton) {
-                    top.linkTo(textField.bottom, 20.dp)
-                    width = Dimension.fillToConstraints
-                },
-           shape = RoundedCornerShape(10.dp)
-        ) {
-            Icon(painter = painterResource(id = R.drawable.ic_apple_logo) , contentDescription = "Apple Icon")
+                // Assign reference "button" to the Button composable
+                // and constrain it to the top of the ConstraintLayout
+                modifier = Modifier
+                    .padding(5.dp, 0.dp, 20.dp, 0.dp)
+                    .constrainAs(appleButton) {
+                        top.linkTo(textField.bottom, 20.dp)
+                        width = Dimension.fillToConstraints
+                        height = Dimension.value(50.dp)
+                    },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF181818)
+                )
+
+            ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_apple_logo),
+                        contentDescription = "Apple Icon",
+                        tint = Color.White
+                    )
+                }
+            } else {
+            OutlinedButton(
+                onClick = { /* Do something */ },
+
+                // Assign reference "button" to the Button composable
+                // and constrain it to the top of the ConstraintLayout
+                modifier = Modifier
+                    .padding(5.dp, 0.dp, 20.dp, 0.dp)
+                    .constrainAs(appleButton) {
+                        top.linkTo(textField.bottom, 20.dp)
+                        width = Dimension.fillToConstraints
+                        height = Dimension.value(50.dp)
+                    },
+                shape = RoundedCornerShape(10.dp),
+
+
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_apple_logo),
+                    contentDescription = "Apple Icon",
+                    tint = Color.Black
+                )
+            }
         }
 
-        var text by remember { mutableStateOf(TextFieldValue(text = "")) }
+
+
+        var nameTextFieldState by remember {
+            mutableStateOf("")
+        }
+
+        var emailTextFieldState by remember {
+            mutableStateOf("")
+        }
+
+        var passwordTextFieldState by remember {
+            mutableStateOf("")
+        }
 
         Text(
             style = MaterialTheme.typography.h3,
@@ -252,23 +330,49 @@ fun ProfileScreen() {
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
             text = "Imię")
 
-        OutlinedTextField(
-            value = text,
-            onValueChange = { newText -> text = newText},
-            placeholder = { Text(
-                text = "Wpisz swoje imię",
-                style = MaterialTheme.typography.h3,) },
-            modifier = Modifier
-                .constrainAs(credentialsName)
-                {
-                    top.linkTo(credentialsNameText.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .fillMaxWidth()
-                .padding(20.dp, 0.dp, 20.dp, 0.dp),
-            shape = RoundedCornerShape(10.dp),
-        )
+        if (isSystemInDarkTheme()) {
+            OutlinedTextField(
+                value = nameTextFieldState,
+                onValueChange = { nameTextFieldState = it},
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(0xFF181818)
+                ),
+                placeholder = { Text(
+                    text = "Wpisz swoje imię",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsName)
+                    {
+                        top.linkTo(credentialsNameText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+            )
+        } else {
+            OutlinedTextField(
+                value = nameTextFieldState,
+                onValueChange = { nameTextFieldState = it},
+                singleLine = true,
+                placeholder = { Text(
+                    text = "Wpisz swoje imię",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsName)
+                    {
+                        top.linkTo(credentialsNameText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+            )
+        }
+
 
 
 
@@ -286,23 +390,49 @@ fun ProfileScreen() {
             text = "Email",
             style = MaterialTheme.typography.h3,)
 
-        OutlinedTextField(
-            value = text,
-            onValueChange = { newText -> text = newText},
-            placeholder = { Text(
-                text = "Wpisz swój email",
-                style = MaterialTheme.typography.h3,) },
-            modifier = Modifier
-                .constrainAs(credentialsEmail)
-                {
-                    top.linkTo(credentialsEmailText.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .fillMaxWidth()
-                .padding(20.dp, 0.dp, 20.dp, 0.dp),
-            shape = RoundedCornerShape(10.dp),
-        )
+        if (isSystemInDarkTheme()) {
+            OutlinedTextField(
+                value = emailTextFieldState,
+                onValueChange = { emailTextFieldState = it },
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(0xFF181818)
+                ),
+                placeholder = { Text(
+                    text = "Wpisz swój email",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsEmail)
+                    {
+                        top.linkTo(credentialsEmailText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+            )
+        } else {
+            OutlinedTextField(
+                value = emailTextFieldState,
+                onValueChange = { emailTextFieldState = it },
+                singleLine = true,
+                placeholder = { Text(
+                    text = "Wpisz swój email",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsEmail)
+                    {
+                        top.linkTo(credentialsEmailText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+            )
+        }
+
 
 
 
@@ -319,23 +449,49 @@ fun ProfileScreen() {
             text = "Hasło",
             style = MaterialTheme.typography.h3,)
 
-        OutlinedTextField(
-            value = text,
-            onValueChange = { newText -> text = newText},
-            placeholder = { Text(
-                text = "Wpisz swoje hasło",
-                style = MaterialTheme.typography.h3,) },
-            modifier = Modifier
-                .constrainAs(credentialsPassword)
-                {
-                    top.linkTo(credentialsPasswordText.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .fillMaxWidth()
-                .padding(20.dp, 0.dp, 20.dp, 0.dp),
-            shape = RoundedCornerShape(10.dp),
-        )
+        if (isSystemInDarkTheme()) {
+            OutlinedTextField(
+                value = passwordTextFieldState,
+                onValueChange = { passwordTextFieldState = it},
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(0xFF181818)
+                ),
+                placeholder = { Text(
+                    text = "Wpisz swoje hasło ",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsPassword)
+                    {
+                        top.linkTo(credentialsPasswordText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+            )
+        } else {
+            OutlinedTextField(
+                value = passwordTextFieldState,
+                onValueChange = { passwordTextFieldState = it},
+                singleLine = true,
+                placeholder = { Text(
+                    text = "Wpisz swoje hasło ",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsPassword)
+                    {
+                        top.linkTo(credentialsPasswordText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+            )
+        }
+
 
         Button(
             onClick = { /* Do something */ },

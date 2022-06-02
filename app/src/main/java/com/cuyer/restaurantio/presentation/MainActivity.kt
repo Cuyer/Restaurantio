@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -41,6 +42,13 @@ class MainActivity : ComponentActivity() {
                 Surface(Modifier.fillMaxSize()) {
                     val navController = rememberNavController()
                     Scaffold(
+                        content = {padding ->
+                            Column(
+                                modifier = Modifier.padding(padding)
+                            ) {
+                                Navigation(navController = navController)
+                            }
+                        },
                         bottomBar = {
                             BottomNavigationBar(
                                 items = listOf(
@@ -73,10 +81,9 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate(it.route)
                                 }
                             )
+
                         }
-                    ) {
-                        Navigation(navController = navController)
-                    }
+                    )
 
                }
             }
