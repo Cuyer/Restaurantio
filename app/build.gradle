@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
 }
 
 android {
@@ -44,7 +45,7 @@ android {
         }
     }
 }
-
+apply plugin: "kotlin-kapt"
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -72,4 +73,14 @@ dependencies {
 
     // accompanist
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+
+    // ROOM
+
+    implementation("androidx.room:room-runtime:2.4.2")
+    annotationProcessor("androidx.room:room-compiler:2.4.2")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:2.4.2")
+
+    implementation("androidx.room:room-ktx:2.4.2")
 }

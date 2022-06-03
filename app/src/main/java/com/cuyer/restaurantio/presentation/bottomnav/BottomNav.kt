@@ -7,32 +7,43 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.core.view.ViewCompat
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.cuyer.restaurantio.R
+import com.cuyer.restaurantio.domain.viewmodels.AuthenticationViewModel
 import com.cuyer.restaurantio.presentation.composables.ButtonWithImage
 import com.cuyer.restaurantio.presentation.composables.Credentials
 import com.cuyer.restaurantio.presentation.composables.StandardButton
@@ -169,8 +180,8 @@ fun MapScreen() {
 }
 
 @Composable
-fun ProfileScreen() {
-
+fun ProfileScreen(viewModel: AuthenticationViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val focusManager = LocalFocusManager.current
     ConstraintLayout(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -303,19 +314,6 @@ fun ProfileScreen() {
         }
 
 
-
-        var nameTextFieldState by remember {
-            mutableStateOf("")
-        }
-
-        var emailTextFieldState by remember {
-            mutableStateOf("")
-        }
-
-        var passwordTextFieldState by remember {
-            mutableStateOf("")
-        }
-
         Text(
             style = MaterialTheme.typography.h3,
             modifier = Modifier
@@ -332,8 +330,8 @@ fun ProfileScreen() {
 
         if (isSystemInDarkTheme()) {
             OutlinedTextField(
-                value = nameTextFieldState,
-                onValueChange = { nameTextFieldState = it},
+                value = viewModel.nameAuth,
+                onValueChange = { viewModel.nameAuth = it},
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color(0xFF181818)
@@ -351,11 +349,17 @@ fun ProfileScreen() {
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp, 20.dp, 0.dp),
                 shape = RoundedCornerShape(10.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                )
             )
         } else {
             OutlinedTextField(
-                value = nameTextFieldState,
-                onValueChange = { nameTextFieldState = it},
+                value = viewModel.nameAuth,
+                onValueChange = { viewModel.nameAuth = it},
                 singleLine = true,
                 placeholder = { Text(
                     text = "Wpisz swoje imię",
@@ -370,6 +374,12 @@ fun ProfileScreen() {
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp, 20.dp, 0.dp),
                 shape = RoundedCornerShape(10.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                )
             )
         }
 
@@ -392,8 +402,8 @@ fun ProfileScreen() {
 
         if (isSystemInDarkTheme()) {
             OutlinedTextField(
-                value = emailTextFieldState,
-                onValueChange = { emailTextFieldState = it },
+                value = viewModel.emailAuth,
+                onValueChange = { viewModel.emailAuth = it },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color(0xFF181818)
@@ -411,11 +421,18 @@ fun ProfileScreen() {
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp, 20.dp, 0.dp),
                 shape = RoundedCornerShape(10.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                )
             )
         } else {
             OutlinedTextField(
-                value = emailTextFieldState,
-                onValueChange = { emailTextFieldState = it },
+                value = viewModel.emailAuth,
+                onValueChange = { viewModel.emailAuth = it },
                 singleLine = true,
                 placeholder = { Text(
                     text = "Wpisz swój email",
@@ -430,6 +447,13 @@ fun ProfileScreen() {
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp, 20.dp, 0.dp),
                 shape = RoundedCornerShape(10.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                )
             )
         }
 
@@ -450,10 +474,26 @@ fun ProfileScreen() {
             style = MaterialTheme.typography.h3,)
 
         if (isSystemInDarkTheme()) {
+            val trailingIconView = @Composable {
+                IconToggleButton(
+                    checked = viewModel.passIconChecked,
+                    onCheckedChange = {
+                        viewModel.passIconChecked = it
+                    }) {
+                    if (viewModel.passIconChecked) {
+                        Icon(imageVector = Icons.Outlined.VisibilityOff, contentDescription = "")
+
+                    } else {
+                        Icon(imageVector = Icons.Outlined.Visibility, contentDescription = "")
+                    }
+                }
+            }
+
             OutlinedTextField(
-                value = passwordTextFieldState,
-                onValueChange = { passwordTextFieldState = it},
+                value = viewModel.passAuth,
+                onValueChange = { viewModel.passAuth = it},
                 singleLine = true,
+                trailingIcon = if (viewModel.passAuth.isNotEmpty()) trailingIconView else null,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color(0xFF181818)
                 ),
@@ -470,12 +510,35 @@ fun ProfileScreen() {
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp, 20.dp, 0.dp),
                 shape = RoundedCornerShape(10.dp),
+                visualTransformation = if (viewModel.passIconChecked) PasswordVisualTransformation()
+                else VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Password),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                )
             )
         } else {
+            val trailingIconView = @Composable {
+                IconToggleButton(
+                    checked = viewModel.passIconChecked,
+                    onCheckedChange = {
+                        viewModel.passIconChecked = it
+                    }) {
+                    if (viewModel.passIconChecked) {
+                        Icon(imageVector = Icons.Outlined.Visibility, contentDescription = "")
+                    } else {
+                        Icon(imageVector = Icons.Outlined.VisibilityOff, contentDescription = "")
+                    }
+                }
+            }
             OutlinedTextField(
-                value = passwordTextFieldState,
-                onValueChange = { passwordTextFieldState = it},
+                value = viewModel.passAuth,
+                onValueChange = { viewModel.passAuth = it},
                 singleLine = true,
+                trailingIcon = if (viewModel.passAuth.isNotEmpty()) trailingIconView else null,
                 placeholder = { Text(
                     text = "Wpisz swoje hasło ",
                     style = MaterialTheme.typography.h3,) },
@@ -489,27 +552,66 @@ fun ProfileScreen() {
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp, 20.dp, 0.dp),
                 shape = RoundedCornerShape(10.dp),
+                visualTransformation = if (viewModel.passIconChecked) PasswordVisualTransformation()
+                else VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Password),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                )
             )
         }
 
-
-        Button(
-            onClick = { /* Do something */ },
-            // Assign reference "button" to the Button composable
-            // and constrain it to the top of the ConstraintLayout
-            modifier = Modifier
-                .constrainAs(createAccountButton) {
-                    top.linkTo(credentialsPassword.bottom, 20.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    width = Dimension.fillToConstraints
-                }
-                .padding(20.dp, 0.dp, 20.dp, 0.dp),
-            shape = RoundedCornerShape(10.dp),
+        if (
+            viewModel.nameAuth.isNotEmpty() &&
+            viewModel.emailAuth.isNotEmpty() &&
+            viewModel.passAuth.isNotEmpty()
         ) {
-            Text(text = "Stwórz konto",
-                style = MaterialTheme.typography.button,)
+            Button(
+                onClick = { viewModel.authValidation() },
+                // Assign reference "button" to the Button composable
+                // and constrain it to the top of the ConstraintLayout
+                modifier = Modifier
+                    .constrainAs(createAccountButton) {
+                        top.linkTo(credentialsPassword.bottom, 20.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
+                    }
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
+            ) {
+                Text(text = "Stwórz konto",
+                    color = Color.White,
+                    style = MaterialTheme.typography.button,)
+            }
+        } else {
+
+            Button(
+                onClick = { viewModel.authValidation() },
+                // Assign reference "button" to the Button composable
+                // and constrain it to the top of the ConstraintLayout
+                modifier = Modifier
+                    .constrainAs(createAccountButton) {
+                        top.linkTo(credentialsPassword.bottom, 20.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
+                    }
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray)
+            ) {
+                Text(text = "Stwórz konto",
+                    color = Color.White,
+                    style = MaterialTheme.typography.button,)
+            }
         }
+
+
 
         Text(
             text = "Masz już konto? Zaloguj się",
@@ -526,4 +628,8 @@ fun ProfileScreen() {
 
 
     }
+
+
 }
+
+
