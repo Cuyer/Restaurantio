@@ -1,12 +1,14 @@
 package com.cuyer.restaurantio.presentation.bottomnav
 
 import android.provider.MediaStore
+import android.text.SpannableString
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -28,8 +30,12 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
@@ -37,11 +43,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.cuyer.restaurantio.R
 import com.cuyer.restaurantio.domain.viewmodels.AuthenticationViewModel
 import com.cuyer.restaurantio.presentation.composables.ButtonWithImage
@@ -68,9 +74,10 @@ fun Navigation (navController: NavHostController) {
         composable("profile") {
             ProfileScreen()
         }
-
     }
 }
+
+
 
 @Composable
 fun BottomNavigationBar(
@@ -611,10 +618,10 @@ fun ProfileScreen(viewModel: AuthenticationViewModel = androidx.lifecycle.viewmo
             }
         }
 
-
-
+      
+        
         Text(
-            text = "Masz już konto? Zaloguj się",
+            text = "Masz już konto? ",
             style = MaterialTheme.typography.body2,
             modifier = Modifier
                 .constrainAs(textField2) {
@@ -624,12 +631,7 @@ fun ProfileScreen(viewModel: AuthenticationViewModel = androidx.lifecycle.viewmo
                 }
         )
 
-
-
-
     }
-
-
 }
 
 

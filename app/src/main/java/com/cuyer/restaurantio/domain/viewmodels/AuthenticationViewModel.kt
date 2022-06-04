@@ -25,6 +25,8 @@ class AuthenticationViewModel(application: Application) : AndroidViewModel(appli
 
 
 
+
+
     fun authValidation() {
         if (nameAuth.isEmpty()) {
             Toast.makeText(getApplication(), "Podaj swoje imię", Toast.LENGTH_SHORT).show()
