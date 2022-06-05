@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.compose.rememberNavController
 import com.cuyer.restaurantio.presentation.bottomnav.BottomNavItem
 import com.cuyer.restaurantio.presentation.bottomnav.BottomNavigationBar
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RestaurantioTheme {
                 Surface(Modifier.fillMaxSize()) {
+
                     val navController = rememberNavController()
                     Scaffold(
                         content = {padding ->

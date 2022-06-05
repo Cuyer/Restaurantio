@@ -71,12 +71,29 @@ fun Navigation (navController: NavHostController) {
             MapScreen()
         }
 
+
         composable("profile") {
             ProfileScreen()
+
         }
+
+        composable("login") {
+                LoginScreen()
+        }
+
     }
 }
 
+
+@Composable
+fun LoginScreen() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Orders")
+    }
+}
 
 
 @Composable
