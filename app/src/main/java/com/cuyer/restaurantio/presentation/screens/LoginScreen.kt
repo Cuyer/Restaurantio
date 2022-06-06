@@ -1,4 +1,4 @@
-package com.cuyer.restaurantio.presentation.bottomnav
+package com.cuyer.restaurantio.presentation.screens
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -10,11 +10,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
@@ -22,168 +22,21 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.input.*
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.*
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.cuyer.restaurantio.R
-import com.cuyer.restaurantio.domain.viewmodels.AuthenticationViewModel
-import com.cuyer.restaurantio.presentation.screens.LoginScreen
-
+import com.cuyer.restaurantio.domain.viewmodels.LoginViewModel
 
 @Composable
-fun Navigation (navController: NavHostController) {
-
-    NavHost(navController = navController, startDestination = "home" ) {
-
-        composable("home") {
-            HomeScreen()
-        }
-
-        composable("orders") {
-            OrdersScreen()
-        }
-
-        composable("map") {
-            MapScreen()
-        }
-
-
-        composable("profile") {
-            ProfileScreen(onItemClick = {
-                navController.navigate("login")
-            })
-
-        }
-
-        composable("login") {
-                LoginScreen(onItemClick = {
-                    navController.navigate("profile")
-                }, onBackClick = {
-                    navController.navigate("profile")
-                })
-        }
-    }
-}
-
-
-@Composable
-fun BottomNavigationBar(
-    items: List<BottomNavItem>,
-    navController: NavController,
-    modifier: Modifier = Modifier,
-    onItemClick: (BottomNavItem) -> Unit
-) {
-    if (isSystemInDarkTheme()) {
-    val backStackEntry = navController.currentBackStackEntryAsState()
-    BottomNavigation(
-        modifier = modifier,
-        backgroundColor = Color.Black,
-        elevation = 8.dp
-    ) {
-        items.forEach { item ->
-            val selected = item.route == backStackEntry.value?.destination?.route
-            BottomNavigationItem(
-                selected = selected,
-                onClick = { onItemClick(item) },
-                unselectedContentColor = Color.Gray,
-                selectedContentColor = Color.White,
-                icon = {
-                    Column(horizontalAlignment = CenterHorizontally) {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.name
-                        )
-                        if (selected) {
-                            Text(
-                                text = item.name,
-                                textAlign = TextAlign.Center,
-                                fontSize = 10.sp
-                            )
-                        }
-                    }
-
-                }
-            )
-        }
-     }
-  } else {
-        val backStackEntry = navController.currentBackStackEntryAsState()
-        BottomNavigation(
-            modifier = modifier,
-            backgroundColor = Color.White,
-            elevation = 8.dp
-        ) {
-            items.forEach { item ->
-                val selected = item.route == backStackEntry.value?.destination?.route
-                BottomNavigationItem(
-                    selected = selected,
-                    onClick = { onItemClick(item) },
-                    selectedContentColor = Color.Black,
-                    unselectedContentColor = Color.Gray,
-                    icon = {
-                        Column(horizontalAlignment = CenterHorizontally) {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = item.name
-                            )
-                            if (selected) {
-                                Text(
-                                    text = item.name,
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 10.sp
-                                )
-                            }
-                        }
-
-                    }
-                )
-            }
-        }
-    }
-}
-
-
-@Composable
-fun HomeScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Home screen")
-    }
-}
-
-@Composable
-fun OrdersScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Orders")
-    }
-}
-
-@Composable
-fun MapScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Map")
-    }
-}
-
-@Composable
-fun ProfileScreen(onItemClick: (Int) -> Unit,
-    viewModel: AuthenticationViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun LoginScreen(onItemClick: (Int) -> Unit,
+                onBackClick: () -> Unit,
+                viewModel: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val focusManager = LocalFocusManager.current
 
     ConstraintLayout(
@@ -191,31 +44,60 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
             .verticalScroll(rememberScrollState())
             .fillMaxSize(),
     ) {
-        val(signUpTextField, textField, googleButton, appleButton,
-            credentialsName, credentialsEmail, credentialsPassword, credentialsNameText,
+        val(backButton,signUpTextField, textField, googleButton, appleButton,
+            credentialsEmail, credentialsPassword,
             credentialsEmailText, credentialsPasswordText,
-            createAccountButton, textField2, appendedString ) = createRefs()
+            createAccountButton, textField2 ) = createRefs()
         createHorizontalChain(googleButton,appleButton, chainStyle = ChainStyle.Packed)
 
 
-        // Assign reference "text" to the Text composable
-        // and constrain it to the bottom of the Button composable
-        Text(
-            text = "Zarejestruj się",
-            style = MaterialTheme.typography.h5,
-            modifier = Modifier
-                .constrainAs(signUpTextField) {
-            top.linkTo(parent.top, margin = 16.dp)
-            start.linkTo(parent.start, margin = 20.dp)
-        })
+
+        Row(modifier = Modifier
+            .constrainAs(backButton) {
+                start.linkTo(parent.start, margin = 16.dp)
+                top.linkTo(parent.top, margin = 16.dp)
+            }) {
+            if (isSystemInDarkTheme()) {
+                OutlinedButton(
+                    onClick = onBackClick,
+                    modifier = Modifier
+                        .width(48.dp)
+                        .height(48.dp),
+                    shape = RoundedCornerShape(10.dp)) {
+                    Icon(imageVector = Icons.Filled.ArrowBackIosNew,
+                        contentDescription = "Go Back Button",
+                        tint = Color.White)
+                }
+            } else {
+                OutlinedButton(
+                    onClick = onBackClick,
+                    modifier = Modifier
+                        .width(48.dp)
+                        .height(48.dp),
+                    shape = RoundedCornerShape(10.dp)) {
+                    Icon(imageVector = Icons.Filled.ArrowBackIosNew,
+                        contentDescription = "Go Back Button",
+                        tint = Color.Black)
+                }
+            }
+
+            // Assign reference "text" to the Text composable
+            // and constrain it to the bottom of the Button composable
+            Text(
+                text = "Zaloguj się",
+                style = MaterialTheme.typography.h5,
+                modifier = Modifier
+                    .padding(20.dp, 0.dp, 0.dp, 0.dp))
+        }
+
 
         Text(
-            text = "Zarejestruj się używając jednej z poniższych opcji.",
+            text = "Zaloguj się używając jednej z poniższych opcji.",
             style = MaterialTheme.typography.body2,
             modifier = Modifier
                 .constrainAs(textField) {
                     start.linkTo(parent.start, margin = 20.dp)
-                    top.linkTo(signUpTextField.bottom, margin = 60.dp)
+                    top.linkTo(backButton.bottom, margin = 60.dp)
                 }
 
         )
@@ -258,7 +140,7 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
                 shape = RoundedCornerShape(10.dp),
 
 
-            ) {
+                ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_google_icon),
                     contentDescription = "Google Icon",
@@ -286,13 +168,13 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
                 )
 
             ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_apple_logo),
-                        contentDescription = "Apple Icon",
-                        tint = Color.White
-                    )
-                }
-            } else {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_apple_logo),
+                    contentDescription = "Apple Icon",
+                    tint = Color.White
+                )
+            }
+        } else {
             OutlinedButton(
                 onClick = { /* Do something */ },
 
@@ -308,7 +190,7 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
                 shape = RoundedCornerShape(10.dp),
 
 
-            ) {
+                ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_apple_logo),
                     contentDescription = "Apple Icon",
@@ -319,90 +201,17 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
 
 
         Text(
-            style = MaterialTheme.typography.h3,
-            modifier = Modifier
-                .constrainAs(credentialsNameText)
-                {
-                    bottom.linkTo(credentialsName.top)
-                    start.linkTo(parent.start)
-                    top.linkTo(googleButton.bottom, 30.dp)
-
-                }
-                .fillMaxWidth()
-                .padding(25.dp, 0.dp, 20.dp, 5.dp),
-            text = "Imię")
-
-        if (isSystemInDarkTheme()) {
-            OutlinedTextField(
-                value = viewModel.nameAuth,
-                onValueChange = { viewModel.nameAuth = it},
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(0xFF181818)
-                ),
-                placeholder = { Text(
-                    text = "Wpisz swoje imię",
-                    style = MaterialTheme.typography.h3,) },
-                modifier = Modifier
-                    .constrainAs(credentialsName)
-                    {
-                        top.linkTo(credentialsNameText.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                    .fillMaxWidth()
-                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
-                shape = RoundedCornerShape(10.dp),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
-            )
-        } else {
-            OutlinedTextField(
-                value = viewModel.nameAuth,
-                onValueChange = { viewModel.nameAuth = it},
-                singleLine = true,
-                placeholder = { Text(
-                    text = "Wpisz swoje imię",
-                    style = MaterialTheme.typography.h3,) },
-                modifier = Modifier
-                    .constrainAs(credentialsName)
-                    {
-                        top.linkTo(credentialsNameText.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-                    .fillMaxWidth()
-                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
-                shape = RoundedCornerShape(10.dp),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
-            )
-        }
-
-
-
-
-        Text(
             modifier = Modifier
                 .constrainAs(credentialsEmailText)
                 {
-                    top.linkTo(credentialsName.bottom, 20.dp)
+                    top.linkTo(googleButton.bottom, 30.dp)
                     start.linkTo(parent.start)
-
-
                 }
                 .fillMaxWidth()
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
             text = "Email",
             style = MaterialTheme.typography.h3,)
+
 
         if (isSystemInDarkTheme()) {
             OutlinedTextField(
@@ -569,7 +378,6 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
         }
 
         if (
-            viewModel.nameAuth.isNotEmpty() &&
             viewModel.emailAuth.isNotEmpty() &&
             viewModel.passAuth.isNotEmpty()
         ) {
@@ -609,7 +417,7 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray)
             ) {
-                Text(text = "Stwórz konto",
+                Text(text = "Zaloguj się",
                     color = Color.White,
                     style = MaterialTheme.typography.button,)
             }
@@ -623,13 +431,13 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
                 top.linkTo(createAccountButton.bottom, 20.dp)
             }) {
             Text(
-                text = "Masz już konto? ",
+                text = "Nie masz konta? ",
                 style = MaterialTheme.typography.body2,
 
                 )
 
             ClickableText(
-                text = AnnotatedString("Zaloguj się", spanStyle = SpanStyle(
+                text = AnnotatedString("Zarejestruj się", spanStyle = SpanStyle(
                     color = MaterialTheme.colors.primary
                 )
                 ),
@@ -641,4 +449,3 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
 
     }
 }
-

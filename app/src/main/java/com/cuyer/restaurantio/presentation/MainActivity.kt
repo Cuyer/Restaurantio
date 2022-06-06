@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cuyer.restaurantio.presentation.bottomnav.BottomNavItem
 import com.cuyer.restaurantio.presentation.bottomnav.BottomNavigationBar
@@ -42,8 +45,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             RestaurantioTheme {
                 Surface(Modifier.fillMaxSize()) {
-
                     val navController = rememberNavController()
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentRoute = navBackStackEntry?.destination?.route
                     Scaffold(
                         content = {padding ->
                             Column(
@@ -53,44 +57,48 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         bottomBar = {
-                            BottomNavigationBar(
-                                items = listOf(
-                                    BottomNavItem(
-                                        name = "Home",
-                                        route = "home",
-                                        icon = Icons.Outlined.Home
-                                    ),
-                                    BottomNavItem(
-                                        name = "Orders",
-                                        route = "orders",
-                                        icon = Icons.Outlined.ShoppingBag
-                                    ),
-                                    BottomNavItem(
-                                        name = "Map",
-                                        route = "map",
-                                        icon = Icons.Outlined.Map
-                                    ),
-                                    BottomNavItem(
-                                        name = "Profile",
-                                        route = "profile",
-                                        icon = Icons.Outlined.Person
-                                    ),
+                            if (currentRoute == "login") {
+
+                            } else {
+                                BottomNavigationBar(
+                                    items = listOf(
+                                        BottomNavItem(
+                                            name = "Home",
+                                            route = "home",
+                                            icon = Icons.Outlined.Home
+                                        ),
+                                        BottomNavItem(
+                                            name = "Orders",
+                                            route = "orders",
+                                            icon = Icons.Outlined.ShoppingBag
+                                        ),
+                                        BottomNavItem(
+                                            name = "Map",
+                                            route = "map",
+                                            icon = Icons.Outlined.Map
+                                        ),
+                                        BottomNavItem(
+                                            name = "Profile",
+                                            route = "profile",
+                                            icon = Icons.Outlined.Person
+                                        ),
 
 
-                                ),
+                                        ),
 
-                                navController = navController,
-                                onItemClick = {
-                                    navController.navigate(it.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
+                                    navController = navController,
+                                    onItemClick = {
+                                        navController.navigate(it.route) {
+                                            popUpTo(navController.graph.findStartDestination().id) {
+                                                saveState = true
+                                            }
+                                            launchSingleTop = true
+                                            restoreState = true
                                         }
-                                        launchSingleTop = true
-                                        restoreState = true
                                     }
-                                }
-                            )
+                                )
 
+                            }
                         }
                     )
 
