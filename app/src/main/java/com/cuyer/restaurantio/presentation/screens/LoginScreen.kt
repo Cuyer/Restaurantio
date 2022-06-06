@@ -52,11 +52,13 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
 
 
 
-        Row(modifier = Modifier
+        Row(
+            modifier = Modifier
             .constrainAs(backButton) {
                 start.linkTo(parent.start, margin = 16.dp)
                 top.linkTo(parent.top, margin = 16.dp)
-            }) {
+            },
+            verticalAlignment = Alignment.CenterVertically) {
             if (isSystemInDarkTheme()) {
                 OutlinedButton(
                     onClick = onBackClick,
@@ -429,7 +431,8 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 top.linkTo(createAccountButton.bottom, 20.dp)
-            }) {
+            },
+            verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Nie masz konta? ",
                 style = MaterialTheme.typography.body2,

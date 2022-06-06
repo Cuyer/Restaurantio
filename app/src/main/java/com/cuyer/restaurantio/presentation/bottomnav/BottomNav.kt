@@ -621,7 +621,8 @@ fun ProfileScreen(onItemClick: (Int) -> Unit,
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 top.linkTo(createAccountButton.bottom, 20.dp)
-            }) {
+            },
+                verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Masz już konto? ",
                 style = MaterialTheme.typography.body2,
