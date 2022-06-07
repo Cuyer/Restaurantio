@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77270792167",
+    "project_id": "restaurantio",
+    "storage_bucket": "restaurantio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77270792167:android:6528504445014eccf86f42",
+        "android_client_info": {
+          "package_name": "com.cuyer.restaurantio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77270792167-pdug4s6b9mabvrnd7esh61r3nom6b36u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2c-JHsvbU-GN689Fwk4QPVLVtAr73qM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77270792167-pdug4s6b9mabvrnd7esh61r3nom6b36u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

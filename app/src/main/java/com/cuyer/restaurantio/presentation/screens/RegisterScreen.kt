@@ -1,7 +1,10 @@
 package com.cuyer.restaurantio.presentation.screens
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -10,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.runtime.Composable
@@ -31,12 +33,11 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.cuyer.restaurantio.R
-import com.cuyer.restaurantio.domain.viewmodels.LoginViewModel
+import com.cuyer.restaurantio.domain.viewmodels.RegisterViewModel
 
 @Composable
-fun LoginScreen(onItemClick: (Int) -> Unit,
-                onBackClick: () -> Unit,
-                viewModel: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun RegisterScreen(onItemClick: (Int) -> Unit,
+                   viewModel: RegisterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val focusManager = LocalFocusManager.current
 
     ConstraintLayout(
@@ -44,62 +45,31 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
             .verticalScroll(rememberScrollState())
             .fillMaxSize(),
     ) {
-        val(backButton,signUpTextField, textField, googleButton, appleButton,
-            credentialsEmail, credentialsPassword,
+        val(signUpTextField, textField, googleButton, appleButton,
+            credentialsName, credentialsEmail, credentialsPassword, credentialsNameText,
             credentialsEmailText, credentialsPasswordText,
-            createAccountButton, textField2 ) = createRefs()
+            createAccountButton, textField2, appendedString ) = createRefs()
         createHorizontalChain(googleButton,appleButton, chainStyle = ChainStyle.Packed)
 
 
-
-        Row(
+        // Assign reference "text" to the Text composable
+        // and constrain it to the bottom of the Button composable
+        Text(
+            text = "Zarejestruj się",
+            style = MaterialTheme.typography.h5,
             modifier = Modifier
-            .constrainAs(backButton) {
-                start.linkTo(parent.start, margin = 20.dp)
-                top.linkTo(parent.top, margin = 16.dp)
-            },
-            verticalAlignment = Alignment.CenterVertically) {
-            if (isSystemInDarkTheme()) {
-                OutlinedButton(
-                    onClick = onBackClick,
-                    modifier = Modifier
-                        .width(48.dp)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(10.dp)) {
-                    Icon(imageVector = Icons.Filled.ArrowBackIosNew,
-                        contentDescription = "Go Back Button",
-                        tint = Color.White)
-                }
-            } else {
-                OutlinedButton(
-                    onClick = onBackClick,
-                    modifier = Modifier
-                        .width(48.dp)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(10.dp)) {
-                    Icon(imageVector = Icons.Filled.ArrowBackIosNew,
-                        contentDescription = "Go Back Button",
-                        tint = Color.Black)
-                }
-            }
-
-            // Assign reference "text" to the Text composable
-            // and constrain it to the bottom of the Button composable
-            Text(
-                text = "Zaloguj się",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier
-                    .padding(20.dp, 0.dp, 0.dp, 0.dp))
-        }
-
+                .constrainAs(signUpTextField) {
+                    top.linkTo(parent.top, margin = 16.dp)
+                    start.linkTo(parent.start, margin = 20.dp)
+                })
 
         Text(
-            text = "Zaloguj się używając jednej z poniższych opcji.",
+            text = "Zarejestruj się używając jednej z poniższych opcji.",
             style = MaterialTheme.typography.body2,
             modifier = Modifier
                 .constrainAs(textField) {
                     start.linkTo(parent.start, margin = 20.dp)
-                    top.linkTo(backButton.bottom, margin = 60.dp)
+                    top.linkTo(signUpTextField.bottom, margin = 60.dp)
                 }
 
         )
@@ -203,17 +173,90 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
 
 
         Text(
+            style = MaterialTheme.typography.h3,
+            modifier = Modifier
+                .constrainAs(credentialsNameText)
+                {
+                    bottom.linkTo(credentialsName.top)
+                    start.linkTo(parent.start)
+                    top.linkTo(googleButton.bottom, 30.dp)
+
+                }
+                .fillMaxWidth()
+                .padding(25.dp, 0.dp, 20.dp, 5.dp),
+            text = "Imię")
+
+        if (isSystemInDarkTheme()) {
+            OutlinedTextField(
+                value = viewModel.nameAuth,
+                onValueChange = { viewModel.nameAuth = it},
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(0xFF181818)
+                ),
+                placeholder = { Text(
+                    text = "Wpisz swoje imię",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsName)
+                    {
+                        top.linkTo(credentialsNameText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                )
+            )
+        } else {
+            OutlinedTextField(
+                value = viewModel.nameAuth,
+                onValueChange = { viewModel.nameAuth = it},
+                singleLine = true,
+                placeholder = { Text(
+                    text = "Wpisz swoje imię",
+                    style = MaterialTheme.typography.h3,) },
+                modifier = Modifier
+                    .constrainAs(credentialsName)
+                    {
+                        top.linkTo(credentialsNameText.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .fillMaxWidth()
+                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
+                shape = RoundedCornerShape(10.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                )
+            )
+        }
+
+
+
+
+        Text(
             modifier = Modifier
                 .constrainAs(credentialsEmailText)
                 {
-                    top.linkTo(googleButton.bottom, 30.dp)
+                    top.linkTo(credentialsName.bottom, 20.dp)
                     start.linkTo(parent.start)
+
+
                 }
                 .fillMaxWidth()
                 .padding(25.dp, 0.dp, 20.dp, 5.dp),
             text = "Email",
             style = MaterialTheme.typography.h3,)
-
 
         if (isSystemInDarkTheme()) {
             OutlinedTextField(
@@ -380,6 +423,7 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
         }
 
         if (
+            viewModel.nameAuth.isNotEmpty() &&
             viewModel.emailAuth.isNotEmpty() &&
             viewModel.passAuth.isNotEmpty()
         ) {
@@ -419,7 +463,7 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray)
             ) {
-                Text(text = "Zaloguj się",
+                Text(text = "Stwórz konto",
                     color = Color.White,
                     style = MaterialTheme.typography.button,)
             }
@@ -434,13 +478,13 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
             },
             verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Nie masz konta? ",
+                text = "Masz już konto? ",
                 style = MaterialTheme.typography.body2,
 
                 )
 
             ClickableText(
-                text = AnnotatedString("Zarejestruj się", spanStyle = SpanStyle(
+                text = AnnotatedString("Zaloguj się", spanStyle = SpanStyle(
                     color = MaterialTheme.colors.primary
                 )
                 ),
@@ -448,7 +492,5 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
                 style = MaterialTheme.typography.body2,
             )
         }
-
-
     }
 }
