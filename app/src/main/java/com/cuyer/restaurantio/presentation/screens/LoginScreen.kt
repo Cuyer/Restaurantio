@@ -36,6 +36,7 @@ import com.cuyer.restaurantio.domain.viewmodels.LoginViewModel
 @Composable
 fun LoginScreen(onItemClick: (Int) -> Unit,
                 onBackClick: () -> Unit,
+                onLogInClick: () -> Unit,
                 viewModel: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val focusManager = LocalFocusManager.current
 
@@ -384,7 +385,7 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
             viewModel.passAuth.isNotEmpty()
         ) {
             Button(
-                onClick = { viewModel.authValidation() },
+                onClick = { viewModel.authValidation(onLogInClick) },
                 // Assign reference "button" to the Button composable
                 // and constrain it to the top of the ConstraintLayout
                 modifier = Modifier
@@ -398,14 +399,14 @@ fun LoginScreen(onItemClick: (Int) -> Unit,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
             ) {
-                Text(text = "Stwórz konto",
+                Text(text = "Zaloguj się",
                     color = Color.White,
                     style = MaterialTheme.typography.button,)
             }
         } else {
 
             Button(
-                onClick = { viewModel.authValidation() },
+                onClick = { viewModel.authValidation(onLogInClick) },
                 // Assign reference "button" to the Button composable
                 // and constrain it to the top of the ConstraintLayout
                 modifier = Modifier

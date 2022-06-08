@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "77270792167-eu7tn3ncuocq5ge4ss6hs231n5lc3iv8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cuyer.restaurantio",
+            "certificate_hash": "6b49b7db639d6a2bece7da9607621497ff0579d4"
+          }
+        },
+        {
           "client_id": "77270792167-pdug4s6b9mabvrnd7esh61r3nom6b36u.apps.googleusercontent.com",
           "client_type": 3
         }

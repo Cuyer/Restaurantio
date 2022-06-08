@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel: ViewModel() {
+class MainActivityViewModel : ViewModel() {
 
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
@@ -23,14 +23,6 @@ class MainActivityViewModel: ViewModel() {
         viewModelScope.launch {
             delay(3000)
             _isLoading.value = false
-            Log.d("islogged", " User is : $isUserLoggedIn")
-            val user = Firebase.auth.currentUser
-            if (user != null) {
-                isUserLoggedIn = true
-            } else {
-                isUserLoggedIn = false
-            }
-
         }
     }
 }

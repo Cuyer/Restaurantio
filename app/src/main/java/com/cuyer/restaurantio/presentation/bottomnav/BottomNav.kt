@@ -1,5 +1,6 @@
 package com.cuyer.restaurantio.presentation.bottomnav
 
+import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.BottomNavigation
@@ -7,6 +8,9 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,13 +24,21 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.cuyer.restaurantio.domain.viewmodels.MainActivityViewModel
 import com.cuyer.restaurantio.presentation.screens.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
 fun Navigation (navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = "home",  ) {
+        var isLogged by mutableStateOf(false)
 
+        if (Firebase.auth.currentUser != null) {
+            isLogged = true
+        } else {
+            isLogged = false
+        }
 
         composable("home") {
             HomeScreen()
@@ -41,8 +53,13 @@ fun Navigation (navController: NavHostController) {
         }
 
         composable("profile") {
-            if(MainActivityViewModel().isUserLoggedIn == false) {
-                RegisterScreen(onItemClick = { navController.navigate("login") } )
+            if(isLogged == false) {
+                RegisterScreen(
+                    onItemClick = { navController.navigate("login") },
+                    onRegisterClick = {
+                        navController.popBackStack()
+                        navController.navigate("profile")
+                        } )
             } else {
                 ProfileScreen()
             }
@@ -54,7 +71,10 @@ fun Navigation (navController: NavHostController) {
                     navController.navigate("profile")
                 }, onBackClick = {
                     navController.navigate("profile")
-                })
+                }, onLogInClick = {
+                    navController.popBackStack()
+                    navController.navigate("profile")
+                    })
         }
     }
 }

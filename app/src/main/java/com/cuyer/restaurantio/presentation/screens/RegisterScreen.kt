@@ -37,6 +37,7 @@ import com.cuyer.restaurantio.domain.viewmodels.RegisterViewModel
 
 @Composable
 fun RegisterScreen(onItemClick: (Int) -> Unit,
+                   onRegisterClick: () -> Unit,
                    viewModel: RegisterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val focusManager = LocalFocusManager.current
 
@@ -428,7 +429,7 @@ fun RegisterScreen(onItemClick: (Int) -> Unit,
             viewModel.passAuth.isNotEmpty()
         ) {
             Button(
-                onClick = { viewModel.authValidation() },
+                onClick = { viewModel.authValidation(onRegisterClick) },
                 // Assign reference "button" to the Button composable
                 // and constrain it to the top of the ConstraintLayout
                 modifier = Modifier
@@ -449,7 +450,7 @@ fun RegisterScreen(onItemClick: (Int) -> Unit,
         } else {
 
             Button(
-                onClick = { viewModel.authValidation() },
+                onClick =  { viewModel.authValidation(onRegisterClick) },
                 // Assign reference "button" to the Button composable
                 // and constrain it to the top of the ConstraintLayout
                 modifier = Modifier
