@@ -1,5 +1,7 @@
 package com.cuyer.restaurantio.presentation.screens
 
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -34,10 +37,17 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.cuyer.restaurantio.R
 import com.cuyer.restaurantio.domain.viewmodels.RegisterViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import kotlinx.coroutines.launch
+
+
 
 @Composable
+
 fun RegisterScreen(onItemClick: (Int) -> Unit,
                    onRegisterClick: () -> Unit,
+                   onGoogleButtonClick: () -> Unit,
                    viewModel: RegisterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val focusManager = LocalFocusManager.current
 
@@ -76,7 +86,8 @@ fun RegisterScreen(onItemClick: (Int) -> Unit,
         )
         if (isSystemInDarkTheme()) {
             OutlinedButton(
-                onClick = { /* Do something */ },
+                onClick = {}
+                ,
                 // Assign reference "button" to the Button composable
                 // and constrain it to the top of the ConstraintLayout
                 modifier = Modifier
@@ -100,7 +111,7 @@ fun RegisterScreen(onItemClick: (Int) -> Unit,
             }
         } else {
             OutlinedButton(
-                onClick = { /* Do something */ },
+                onClick = {},
                 // Assign reference "button" to the Button composable
                 // and constrain it to the top of the ConstraintLayout
                 modifier = Modifier
@@ -495,3 +506,4 @@ fun RegisterScreen(onItemClick: (Int) -> Unit,
         }
     }
 }
+

@@ -59,7 +59,8 @@ fun Navigation (navController: NavHostController) {
                     onRegisterClick = {
                         navController.popBackStack()
                         navController.navigate("profile")
-                        } )
+                        },
+                onGoogleButtonClick = { navController.navigate("profile") })
             } else {
                 ProfileScreen()
             }
