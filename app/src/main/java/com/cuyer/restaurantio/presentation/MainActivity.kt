@@ -30,13 +30,16 @@ import com.cuyer.restaurantio.presentation.bottomnav.BottomNavigationBar
 import com.cuyer.restaurantio.presentation.bottomnav.Navigation
 import com.cuyer.restaurantio.presentation.ui.theme.RestaurantioTheme
 import com.cuyer.restaurantio.domain.viewmodels.MainActivityViewModel
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 
 class MainActivity : ComponentActivity() {
-
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 viewModel.isLoading.value
